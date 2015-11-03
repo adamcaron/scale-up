@@ -255,3 +255,19 @@ footer {
   padding: 10px;
   margin-right: 10px;
 }
+
+/* Pagination */
+
+.pagination span, .pagination em, .pagination a {
+  padding: 10px 10px;
+  font-size: 1.3em;
+}
+
+.pagination a:hover {
+  background-color: white;
+}
+
+.pagination {
+  padding: 10px 10px;
+  background-color: #efefef;
+}
