@@ -22,7 +22,7 @@ gem "responders"
 gem "traceroute"
 gem "rails_12factor", group: :production
 gem "populator"
-gem "skylight"
+gem "skylight", group: :production
 gem 'newrelic_rpm'
 gem 'will_paginate', '~> 3.0.5'
 
@@ -40,6 +40,7 @@ end
 group :development do
   gem "better_errors"
   gem "binding_of_caller"
+  gem "bullet"
 end
 
 group :test do
