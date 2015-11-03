@@ -1,4 +1,49 @@
-## The Pivot - Keevahh
+# The Scale-Up
+
+Scale an existing Rails app, optimizing for performance and load. A few of the focuses of this project are:
+
+ - Handle a database with large numbers of records
+ - Handle heavy request volume/throughput
+ - Diagnose and fix performance bottlenecks (without compromising existing features)
+ - Moniter production (error and performance) behavior of an application
+
+The original application is already deployed to production, and the goal is to keep them that way, add new features and improve performance while avoiding downtime.
+
+## Production Deployment & Performance Monitering
+
+This app is designed to comfortably handle hundreds of requests per minute with an average response time below 100ms with 600+ RPM (and below 200ms with 400+ RPM).
+
+## Load Testing / User Scripting
+
+In order to evaluate the performance of this application, it can be exposed to heavy load via a load-testing script which exercises as many of the application's endpoints as possible.
+
+User paths include:
+
+ - Anonymous user browses loan requests
+ - User browses pages of loan requests
+ - User browses categories
+ - User browses pages of categories
+ - User views individual loan request
+ - New user signs up as lender
+ - New user signs up as borrower
+ - New borrower creates loan request
+ - Lender makes loan
+
+## Database Load
+
+In addition to handling heavy request load from users, this application handles database load against a db with large numbers of records. To do this, the various tables in the DB was seeded with lots of records:
+
+ - 500,000+ "Loan Request" records
+ - 200,000+ "Borrower" records
+ - 30,000+ "Lender" records
+ - 50,000+ "Order/Purchase" records
+ - Appropriate numbers of "associated records". So if each User has an associated address, then those records should be present in proportional numbers.
+
+An additional goal for this project was to utilize multiple caching techniques along with sophisticated query optimizations and combinations.
+
+----------
+
+## The Original App: Keevahh
 
 Keevahh is a micro-lending platform that allows both lenders and borrowers to interact. Borrowers are able to create a project or loan request and lenders are able to contribute to various projects.
 
@@ -32,7 +77,7 @@ the instance. For example:
 $ heroku pg:push the_pivot_development DATABASE_URL
 ```
 
-### Contributor Log
+### Keevahh Contributor Log
 
 * [Markus Olsen](https://github.com/neslom),
 * [Trey Tomlinson](https://github.com/treyx)
