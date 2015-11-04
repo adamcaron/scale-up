@@ -52,10 +52,10 @@ module LoadScript
     def log_in(email="demo+horace@jumpstartlab.com", pw="password")
       log_out
       session.visit host
-      session.click_link("Log In")
-      session.fill_in("email_address", with: email)
-      session.fill_in("password", with: pw)
-      session.click_link_or_button("Login")
+      session.click_link("Login")
+      session.fill_in("session_email", with: email)
+      session.fill_in("session_password", with: pw)
+      session.click_link_or_button("Log In")
     end
 
     def browse_loan_requests
