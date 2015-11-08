@@ -46,7 +46,12 @@ module LoadScript
     end
 
     def actions
-      [:browse_loan_requests, :sign_up_as_lender]
+      [
+        :browse_loan_requests,
+        :user_browses_loan_requests,
+        :sign_up_as_lender,
+        :sign_up_as_borrower
+      ]
     end
 
     def log_in(email="demo+horace@jumpstartlab.com", pw="password")
@@ -56,11 +61,6 @@ module LoadScript
       session.fill_in("session_email", with: email)
       session.fill_in("session_password", with: pw)
       session.click_link_or_button("Log In")
-    end
-
-    def browse_loan_requests
-      session.visit "#{host}/browse"
-      session.all(".lr-about").sample.click
     end
 
     def log_out
@@ -78,11 +78,40 @@ module LoadScript
       "TuringPivotBots+#{name.split.join}@gmail.com"
     end
 
+    # Anonymous user browses loan requests
+    def browse_loan_requests
+      log_out
+      session.visit "#{host}/browse"
+      session.all(".lr-about").sample.click
+    end
+
+    # User browses pages of loan requests
+    def user_browses_loan_requests
+      log_in
+      session.visit "#{host}/browse"
+      session.all(".lr-about").sample.click
+    end
+
+    # New user signs up as lender
     def sign_up_as_lender(name = new_user_name)
       log_out
       session.find("#sign-up-dropdown").click
       session.find("#sign-up-as-lender").click
       session.within("#lenderSignUpModal") do
+        session.fill_in("user_name", with: name)
+        session.fill_in("user_email", with: new_user_email(name))
+        session.fill_in("user_password", with: "password")
+        session.fill_in("user_password_confirmation", with: "password")
+        session.click_link_or_button "Create Account"
+      end
+    end
+
+    # New user signs up as borrower
+    def sign_up_as_borrower(name = new_user_name)
+      log_out
+      session.find("#sign-up-dropdown").click
+      session.find("#sign-up-as-borrower").click
+      session.within("#borrowerSignUpModal") do
         session.fill_in("user_name", with: name)
         session.fill_in("user_email", with: new_user_email(name))
         session.fill_in("user_password", with: "password")
