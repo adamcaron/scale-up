@@ -47,11 +47,12 @@ module LoadScript
 
     def actions
       [
-        # :browse_loan_requests,
-        # :user_browses_loan_requests,
-        # :sign_up_as_lender,
-        # :sign_up_as_borrower,
-        :user_browses_categories
+        :browse_loan_requests,
+        :user_browses_loan_requests,
+        :sign_up_as_lender,
+        :sign_up_as_borrower,
+        :user_browses_categories,
+        :user_browses_pages_of_categories
       ]
     end
 
@@ -126,6 +127,14 @@ module LoadScript
       log_in
       session.visit "#{host}/categories"
       session.all("p a").sample.click
+    end
+
+    # User browses pages of categories
+    def user_browses_pages_of_categories
+      log_in
+      session.visit "#{host}/categories"
+      session.all("p a").sample.click # select a category
+      session.all(".lr-about").sample.click # select a loan request
     end
 
     def categories
