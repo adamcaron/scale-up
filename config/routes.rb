@@ -30,5 +30,8 @@ Rails.application.routes.draw do
 
   resources :categories, only: [:index, :show]
 
+  match "/404" => "errors#error404", via: [ :get, :post, :patch, :delete ]
+  match "/500" => "errors#error500", via: [ :get, :post, :patch, :delete ]
+
   get "*path", to: "home#not_found"
 end
