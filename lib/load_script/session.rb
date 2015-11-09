@@ -47,10 +47,11 @@ module LoadScript
 
     def actions
       [
-        :browse_loan_requests,
-        :user_browses_loan_requests,
-        :sign_up_as_lender,
-        :sign_up_as_borrower
+        # :browse_loan_requests,
+        # :user_browses_loan_requests,
+        # :sign_up_as_lender,
+        # :sign_up_as_borrower,
+        :user_browses_categories
       ]
     end
 
@@ -118,6 +119,13 @@ module LoadScript
         session.fill_in("user_password_confirmation", with: "password")
         session.click_link_or_button "Create Account"
       end
+    end
+
+    # User browses categories
+    def user_browses_categories
+      log_in
+      session.visit "#{host}/categories"
+      session.all("p a").sample.click
     end
 
     def categories

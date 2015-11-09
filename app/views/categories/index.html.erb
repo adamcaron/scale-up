@@ -1,0 +1,15 @@
+<div class="page-header">
+  <h1>Loan Categories</h1>
+</div>
+
+<div class="container">
+  <%= will_paginate @categories %>
+  <div class="row">
+
+    <% @categories.each do |category| %>
+      <p><%= link_to category.title, category %></p>
+    <% end %>
+
+  </div> <!-- row -->
+  <%= will_paginate @categories %>
+</div> <!-- container -->
