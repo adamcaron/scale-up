@@ -45,17 +45,6 @@ module LoadScript
       val
     end
 
-    def actions
-      [
-        :browse_loan_requests,
-        :user_browses_loan_requests,
-        :sign_up_as_lender,
-        :sign_up_as_borrower,
-        :user_browses_categories,
-        :user_browses_pages_of_categories
-      ]
-    end
-
     def log_in(email="demo+horace@jumpstartlab.com", pw="password")
       log_out
       session.visit host
@@ -80,22 +69,56 @@ module LoadScript
       "TuringPivotBots+#{name.split.join}@gmail.com"
     end
 
-    # Anonymous user browses loan requests
-    def browse_loan_requests
+    def categories
+      ["Agriculture", "Education", "Community"]
+    end
+
+    def actions
+      [
+        :anonymous_user_browses_loan_requests,
+        :user_browses_pages_of_loan_requests,
+        :user_browses_categories,
+        :user_browses_pages_of_categories,
+        :user_views_individual_loan_request,
+        :new_user_signs_up_as_lender,
+        :new_user_signs_up_as_borrower,
+        :new_borrower_creates_loan_request
+      ]
+    end
+
+    # Endpoints
+
+    def anonymous_user_browses_loan_requests
       log_out
       session.visit "#{host}/browse"
       session.all(".lr-about").sample.click
     end
 
-    # User browses pages of loan requests
-    def user_browses_loan_requests
+    def user_browses_pages_of_loan_requests
+      log_in
+      session.visit "#{host}/browse"
+    end
+
+    def user_browses_categories
+      log_in
+      session.visit "#{host}/categories"
+      session.all("p a").sample.click
+    end
+
+    def user_browses_pages_of_categories
+      log_in
+      session.visit "#{host}/categories"
+      session.all("p a").sample.click # select a category
+      session.all(".lr-about").sample.click # select a loan request
+    end
+
+    def user_views_individual_loan_request
       log_in
       session.visit "#{host}/browse"
       session.all(".lr-about").sample.click
     end
 
-    # New user signs up as lender
-    def sign_up_as_lender(name = new_user_name)
+    def new_user_signs_up_as_lender(name = new_user_name)
       log_out
       session.find("#sign-up-dropdown").click
       session.find("#sign-up-as-lender").click
@@ -108,8 +131,7 @@ module LoadScript
       end
     end
 
-    # New user signs up as borrower
-    def sign_up_as_borrower(name = new_user_name)
+    def new_user_signs_up_as_borrower(name = new_user_name)
       log_out
       session.find("#sign-up-dropdown").click
       session.find("#sign-up-as-borrower").click
@@ -122,23 +144,20 @@ module LoadScript
       end
     end
 
-    # User browses categories
-    def user_browses_categories
-      log_in
-      session.visit "#{host}/categories"
-      session.all("p a").sample.click
+    def new_borrower_creates_loan_request
+      new_user_signs_up_as_borrower
+      session.click_link_or_button("Create Loan Request")
+      session.within("#loanRequestModal") do
+        session.fill_in("Title", with: "Some New Loan Request")
+        session.fill_in("Description", with: "Descriptiony words.")
+        session.fill_in("Image url", with: "http://www.kiva.org/img/w800/1854916.jpg")
+        session.fill_in("Requested by date", with: "12/15/2015")
+        session.fill_in("Repayment begin date", with: "03/15/2016")
+        session.select("Monthly", from: "Repayment rate")
+        session.select(categories.sample, from: "Category")
+        session.fill_in("Amount", with: "500")
+      end
     end
 
-    # User browses pages of categories
-    def user_browses_pages_of_categories
-      log_in
-      session.visit "#{host}/categories"
-      session.all("p a").sample.click # select a category
-      session.all(".lr-about").sample.click # select a loan request
-    end
-
-    def categories
-      ["Agriculture", "Education", "Community"]
-    end
   end
 end
