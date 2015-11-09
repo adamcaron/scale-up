@@ -82,7 +82,8 @@ module LoadScript
         :user_views_individual_loan_request,
         :new_user_signs_up_as_lender,
         :new_user_signs_up_as_borrower,
-        :new_borrower_creates_loan_request
+        :new_borrower_creates_loan_request,
+        :lender_makes_a_loan
       ]
     end
 
@@ -157,6 +158,14 @@ module LoadScript
         session.select(categories.sample, from: "Category")
         session.fill_in("Amount", with: "500")
       end
+    end
+
+    def lender_makes_a_loan
+      new_user_signs_up_as_lender
+      session.visit("#{host}/browse")
+      session.all(".contribute").sample.click
+      session.visit("#{host}/cart")
+      session.click_on("Transfer Funds")
     end
 
   end
