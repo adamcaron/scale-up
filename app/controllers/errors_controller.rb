@@ -4,6 +4,10 @@ class ErrorsController < ApplicationController
   end
 
   def error500
-    render status: :not_found
+    render status: :internal_server_error
+  end
+
+  def error422
+    render status: :unprocessable_entity
   end
 end
